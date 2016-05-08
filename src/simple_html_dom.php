@@ -254,7 +254,7 @@ class simple_html_dom {
 	 * @param null $idx
 	 * @param bool $lowercase
 	 *
-	 * @return simple_html_dom_node[]|simple_html_dom_node|html
+	 * @return simple_html_dom_node[]|simple_html_dom_node|html[]|html
 	 */
 	public function find($selector, $idx = null, $lowercase = false) {
 		return $this->root->find($selector, $idx, $lowercase);

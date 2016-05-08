@@ -442,7 +442,7 @@ class simple_html_dom_node {
 	 * @param null $idx
 	 * @param bool $lowercase
 	 *
-	 * @return simple_html_dom_node[]|simple_html_dom_node|null|html
+	 * @return simple_html_dom_node[]|simple_html_dom_node|null|html[]|html
 	 */
 	public function find($selector, $idx = null, $lowercase = false) {
 		$selectors = $this->parse_selector($selector);
