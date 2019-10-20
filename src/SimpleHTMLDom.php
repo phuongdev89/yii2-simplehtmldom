@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license   http://www.yiiframework.com/license/
  */
+
 namespace navatech\simplehtmldom;
 
 use yii\helpers\Inflector;
@@ -54,8 +55,9 @@ class SimpleHTMLDom extends Inflector {
 	 */
 	public static function file_get_html($url, $use_include_path = false, $context = null, $offset = - 1, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT) {
 		$dom      = new simple_html_dom(null, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText, $defaultSpanText);
-		$contents = file_get_contents($url, $use_include_path, $context, $offset);
-		if (empty($contents) || strlen($contents) > MAX_FILE_SIZE) {
+		$header   = self::get_web_page($url);
+		$contents = $header['content'];
+		if (empty($contents) || strlen($contents) > MAX_FILE_SIZE || $header['http_code'] !== 200) {
 			return false;
 		}
 		$dom->load($contents, $lowercase, $stripRN);
@@ -96,22 +98,26 @@ class SimpleHTMLDom extends Inflector {
 	 * @return mixed
 	 */
 	public static function get_web_page($url) {
+		$cookie     = Yii::getAlias('@runtime/' . $host . '.txt');
 		$user_agent = 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0';
-		$options    = array(
-			CURLOPT_CUSTOMREQUEST  => "GET",
-			CURLOPT_POST           => false,
-			CURLOPT_USERAGENT      => $user_agent,
-			CURLOPT_COOKIEFILE     => "cookie.txt",
-			CURLOPT_COOKIEJAR      => "cookie.txt",
+		$options    = [
+			CURLOPT_URL            => $url,
 			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_HEADER         => false,
-			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_ENCODING       => "",
+			CURLOPT_MAXREDIRS      => 10,
+			CURLOPT_TIMEOUT        => 120,
+			CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST  => "GET",
+			CURLOPT_USERAGENT      => $user_agent,
+			CURLOPT_COOKIEFILE     => $cookie,
+			CURLOPT_COOKIEJAR      => $cookie,
+			CURLOPT_HEADER         => true,
+			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_AUTOREFERER    => true,
 			CURLOPT_CONNECTTIMEOUT => 120,
-			CURLOPT_TIMEOUT        => 120,
-			CURLOPT_MAXREDIRS      => 10,
-		);
+			CURLOPT_SSL_VERIFYHOST => false,
+			CURLOPT_SSL_VERIFYPEER => false,
+		];
 		$ch         = curl_init($url);
 		curl_setopt_array($ch, $options);
 		$content = curl_exec($ch);
