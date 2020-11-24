@@ -19,6 +19,7 @@
 		}
 	],
 	"require" : {
+		"php" : ">=7.3",
 		"navatech/yii2-navatech-base" : "@dev"
 	},
 	"autoload" : {
