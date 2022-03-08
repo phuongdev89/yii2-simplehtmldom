@@ -1,8 +1,8 @@
 <?php
-namespace navatech\simplehtmldom;
+
+namespace phuong17889\simplehtmldom;
 /**
- * Created by Navatech.
- * @project jav2u-org
+ * Created by phuong17889.
  * @author  Phuong
  * @email   phuong17889[at]gmail.com
  * @date    5/2/2016
@@ -276,5 +276,6 @@ namespace navatech\simplehtmldom;
  * @property string wrap             Belongs to <textarea>    Specifies how the text in a text area is to be wrapped
  *           when submitted in a form.
  * */
-class html {
+class html
+{
 }

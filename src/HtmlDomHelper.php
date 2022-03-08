@@ -7,7 +7,8 @@
  * @time    10/20/2019 9:43 PM
  */
 
-namespace navatech\simplehtmldom;
-class HtmlDomHelper extends SimpleHTMLDom {
+namespace phuong17889\simplehtmldom;
+class HtmlDomHelper extends SimpleHTMLDom
+{
 
 }
