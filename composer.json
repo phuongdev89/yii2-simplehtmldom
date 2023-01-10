@@ -1,5 +1,5 @@
 {
-	"name" : "phuong17889/yii2-simplehtmldom",
+	"name" : "phuongdev89/yii2-simplehtmldom",
 	"description" : "Simple HTML Dom",
 	"type" : "yii2-extension",
 	"keywords" : [
@@ -8,23 +8,23 @@
 		"simplehtmldom"
 	],
 	"license" : "MIT",
-	"homepage" : "https://lephuong.org",
 	"support" : {
-		"source" : "https://github.com/phuong17889/yii2-simplehtmldom"
+		"source" : "https://github.com/phuongdev89/yii2-simplehtmldom"
 	},
 	"authors" : [
 		{
-			"name" : "Le Phuong",
-			"email" : "phuong17889@gmail.com"
+			"name" : "Phuong Dev",
+			"email" : "phuongdev89@gmail.com"
 		}
 	],
 	"require" : {
 		"php" : ">=7.3",
-		"phuong17889/yii2-base" : "@dev"
+		"ext-curl": "*",
+		"phuongdev89/yii2-base" : "@dev"
 	},
 	"autoload" : {
 		"psr-4" : {
-			"phuong17889\\simplehtmldom\\" : "src/"
+			"phuongdev89\\simplehtmldom\\" : "src/"
 		}
 	}
 }

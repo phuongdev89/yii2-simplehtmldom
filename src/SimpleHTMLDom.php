@@ -5,8 +5,9 @@
  * @license   http://www.yiiframework.com/license/
  */
 
-namespace phuong17889\simplehtmldom;
+namespace phuongdev89\simplehtmldom;
 
+use Yii;
 use yii\helpers\Inflector;
 
 define('HDOM_TYPE_ELEMENT', 1);
@@ -52,7 +53,7 @@ class SimpleHTMLDom extends Inflector
      * @param string $defaultBRText
      * @param string $defaultSpanText
      *
-     * @return bool|simple_html_dom_node|simple_html_dom
+     * @return bool|simple_html_dom
      */
     public static function file_get_html($url, $use_include_path = false, $context = null, $offset = -1, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT)
     {
@@ -104,7 +105,7 @@ class SimpleHTMLDom extends Inflector
     public static function get_web_page($url)
     {
         extract(parse_url($url));
-        $cookie = \Yii::getAlias('@runtime/' . $host . '.txt');
+        $cookie = Yii::getAlias('@runtime/' . $host . '.txt');
         $user_agent = 'Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0';
         $options = [
             CURLOPT_URL => $url,
@@ -144,7 +145,7 @@ class SimpleHTMLDom extends Inflector
      */
     public function debug_log($code, $message = null, $ret = null)
     {
-        $path = \Yii::getAlias('@runtime/') . 'simplehtmldom';
+        $path = Yii::getAlias('@runtime/') . 'simplehtmldom';
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }

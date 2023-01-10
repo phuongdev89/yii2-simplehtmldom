@@ -1,10 +1,10 @@
 <?php
 
-namespace phuong17889\simplehtmldom;
+namespace phuongdev89\simplehtmldom;
 /**
- * Created by phuong17889.
+ * Created by phuongdev89.
  * @author  Phuong
- * @email   phuong17889[at]gmail.com
+ * @email   phuongdev89@gmail.com
  * @date    5/2/2016
  * @time    1:32 AM
  * @property string accept           Belongs to <input>    Specifies the types of files that the server accepts (only
