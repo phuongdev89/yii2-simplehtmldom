@@ -27,10 +27,11 @@ define('HDOM_INFO_TEXT', 4);
 define('HDOM_INFO_INNER', 5);
 define('HDOM_INFO_OUTER', 6);
 define('HDOM_INFO_ENDSPACE', 7);
-define('DEFAULT_TARGET_CHARSET', 'UTF-8');
-define('DEFAULT_BR_TEXT', "\r\n");
-define('DEFAULT_SPAN_TEXT', " ");
-define('MAX_FILE_SIZE', 600000);
+defined('DEFAULT_TARGET_CHARSET') || define('DEFAULT_TARGET_CHARSET', 'UTF-8');
+defined('DEFAULT_BR_TEXT') || define('DEFAULT_BR_TEXT', "\r\n");
+defined('DEFAULT_SPAN_TEXT') || define('DEFAULT_SPAN_TEXT', ' ');
+defined('MAX_FILE_SIZE') || define('MAX_FILE_SIZE', 600000);
+define('HDOM_SMARTY_AS_TEXT', 1);
 
 /**
  * Inflector pluralizes and singularizes English nouns. It also contains some other useful methods.
@@ -42,41 +43,55 @@ class SimpleHTMLDom extends Inflector
 {
 
     /**
-     * @param        $url
-     * @param bool $use_include_path
-     * @param null $context
-     * @param int $offset
-     * @param bool $lowercase
-     * @param bool $forceTagsClosed
-     * @param string $target_charset
-     * @param bool $stripRN
-     * @param string $defaultBRText
-     * @param string $defaultSpanText
      *
-     * @return bool|simple_html_dom
+     * @param $url
+     * @param $use_include_path
+     * @param $context
+     * @param $offset
+     * @param $maxLen
+     * @param $lowercase
+     * @param $forceTagsClosed
+     * @param $target_charset
+     * @param $stripRN
+     * @param $defaultBRText
+     * @param $defaultSpanText
+     * @return false|simple_html_dom
+     *
+     * @datetime 2/1/2023 4:56 PM
+     * @author   Phuong Dev <phuongdev89@gmail.com>
      */
-    public static function file_get_html($url, $use_include_path = false, $context = null, $offset = -1, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT)
+    public static function file_get_html($url, $use_include_path = false, $context = null, $offset = 0, $maxLen = -1, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT)
     {
+        if ($maxLen <= 0) {
+            $maxLen = MAX_FILE_SIZE;
+        }
         $dom = new simple_html_dom(null, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText, $defaultSpanText);
-        $header = self::get_web_page($url);
-        $contents = $header['content'];
-        if (empty($contents) || strlen($contents) > MAX_FILE_SIZE || $header['http_code'] !== 200) {
+        /**
+         * For sourceforge users: uncomment the next line and comment the
+         * retrieve_url_contents line 2 lines down if it is not already done.
+         */
+        $contents = file_get_contents($url, $use_include_path, $context, $offset, $maxLen);
+        // $contents = retrieve_url_contents($url);
+        if (empty($contents) || strlen($contents) > $maxLen) {
+            $dom->clear();
             return false;
         }
-        $dom->load($contents, $lowercase, $stripRN);
-        return $dom;
+        return $dom->load($contents, $lowercase, $stripRN);
     }
 
     /**
-     * @param        $str
-     * @param bool $lowercase
-     * @param bool $forceTagsClosed
-     * @param string $target_charset
-     * @param bool $stripRN
-     * @param string $defaultBRText
-     * @param string $defaultSpanText
      *
-     * @return bool|simple_html_dom_node|simple_html_dom
+     * @param $str
+     * @param $lowercase
+     * @param $forceTagsClosed
+     * @param $target_charset
+     * @param $stripRN
+     * @param $defaultBRText
+     * @param $defaultSpanText
+     * @return false|simple_html_dom
+     *
+     * @datetime 2/1/2023 4:56 PM
+     * @author   Phuong Dev <phuongdev89@gmail.com>
      */
     public static function str_get_html($str, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT)
     {
@@ -85,8 +100,7 @@ class SimpleHTMLDom extends Inflector
             $dom->clear();
             return false;
         }
-        $dom->load($str, $lowercase, $stripRN);
-        return $dom;
+        return $dom->load($str, $lowercase, $stripRN);
     }
 
     /**
